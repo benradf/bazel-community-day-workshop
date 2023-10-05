@@ -1,0 +1,44 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+#pkg_tar(
+#    name = "overlay",
+#    srcs = [
+#        ":entrypoint.sh",
+#        "//gif:animated",
+#        "//httpd:darkhttpd",
+#    ],
+#)
+
+genrule(
+    name = "overlay",
+    srcs = [
+        ":entrypoint.sh",
+        "//gif:animated",
+    ],
+    outs = ["overlay.tar"],
+    cmd = """
+        mkdir overlay
+        cp -v $(SRCS) overlay
+        tar -cvf $@ -C overlay .
+    """,
+)
+
+oci_image(
+    name = "image",
+    base = "@ubuntu",
+    tars = [
+        ":overlay",
+        "//httpd:closure",
+    ],
+    cmd = ["/entrypoint.sh"],
+)
+
+oci_tarball(
+    name = "tarball",
+    image = ":image",
+    repo_tags = ["bazel-community-day-workshop:latest"],
+)
+
+# https://github.com/bazel-contrib/rules_oci/issues/217
+# https://github.com/bazel-contrib/rules_oci/blob/4e125bf243181a2cd33c8934988eb6979a61f8b8/oci/private/tarball.sh.tpl#L37C9-L37C62

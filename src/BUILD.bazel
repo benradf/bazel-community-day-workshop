@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_binary(
+    name = "life",
+    embed = [":life_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "life_lib",
+    srcs = ["life.go"],
+    deps = ["@com_github_fogleman_gg//:go_default_library"],
+)

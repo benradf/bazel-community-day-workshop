@@ -1,0 +1,28 @@
+FRAME_COUNT = 1024
+
+FRAMES = [
+    "frame%d.png" % i
+    for i in range(1, FRAME_COUNT)
+]
+
+genrule(
+    name = "frames",
+    tools = ["//src:life"],
+    cmd = """
+        life="$$PWD/$(execpath //src:life)"
+        cd $$(dirname $(execpath frame1.png))
+        $$life 16 64 %d
+    """ % FRAME_COUNT,
+    outs = FRAMES,
+)
+
+genrule(
+    name = "animated",
+    srcs = FRAMES,
+    cmd = """
+        vfopts="fps=10,scale=512:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
+        ffmpeg -i "$$(dirname $(execpath frame1.png))/frame%d.png" -vf "$$vfopts" $@
+    """,
+    outs = ["animated.gif"],
+    visibility = ["//visibility:public"],
+)

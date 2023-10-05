@@ -1,0 +1,23 @@
+cc_binary(
+    name = "darkhttpd",
+    srcs = ["@darkhttpd//:darkhttpd.c"],
+)
+
+genrule(
+    name = "closure",
+    srcs = [":darkhttpd"],
+    outs = ["closure.tar"],
+    cmd = """
+        closure() {
+            echo $$1
+            match='/nix/store/\\S*\\.so\\S*'
+            for dep in $$(ldd "$$1" | grep -o "$$match"); do
+                closure $$dep
+            done
+        }
+        mkdir closure
+        cp $$(closure $< | sort -u) closure
+        tar -cf $@ closure
+    """,
+    visibility = ["//visibility:public"],
+)
