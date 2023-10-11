@@ -7,7 +7,6 @@ import  (
     "math/rand"
     "os"
     "strconv"
-    "time"
 )
 
 type Grid [][]bool
@@ -83,7 +82,7 @@ func (cells Grid) render(dc *gg.Context) {
 }
 
 func main() {
-    rand.Seed(time.Now().UnixNano())
+    rand.Seed(0)
     cellSize, _ := strconv.Atoi(os.Args[1])
     cellCount, _ := strconv.Atoi(os.Args[2])
     frameCount, _ := strconv.Atoi(os.Args[3])

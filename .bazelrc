@@ -1,3 +1,10 @@
+# Use hermetic C++ toolchain from nixpkgs
+build --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
+build --incompatible_enable_cc_toolchain_resolution
+
+# Ensure no environment variables leak into actions
+build --incompatible_strict_action_env
+
 # EngFlow recommended flags
 build --grpc_keepalive_time=30s
 build --nolegacy_important_outputs
