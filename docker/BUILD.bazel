@@ -1,17 +1,12 @@
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
 
-genrule(
+pkg_tar(
     name = "overlay",
     srcs = [
         "@docker_entrypoint//:entrypoint",
         "//gif:animated",
     ],
-    outs = ["overlay.tar"],
-    cmd = """
-        mkdir overlay
-        cp $(SRCS) overlay
-        tar -cf $@ -C overlay .
-    """,
 )
 
 oci_image(

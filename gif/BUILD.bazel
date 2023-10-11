@@ -16,13 +16,16 @@ genrule(
     outs = FRAMES,
 )
 
+FFMPEG = "@ffmpeg//:bin/ffmpeg"
+
 genrule(
     name = "animated",
     srcs = FRAMES,
+    tools = [FFMPEG],
     cmd = """
         vfopts="fps=10,scale=512:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
-        ffmpeg -i "$$(dirname $(execpath frame1.png))/frame%d.png" -vf "$$vfopts" $@
-    """,
+        $(execpath {ffmpeg}) -i "$$(dirname $(execpath frame1.png))/frame%d.png" -vf "$$vfopts" $@
+    """.format(ffmpeg = FFMPEG),
     outs = ["animated.gif"],
     visibility = ["//visibility:public"],
 )
