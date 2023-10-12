@@ -50,6 +50,7 @@ http_archive(
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 go_repository(
@@ -95,8 +96,6 @@ new_git_repository(
     build_file_content = """exports_files(["darkhttpd.c"])""",
 )
 
-
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
@@ -117,7 +116,6 @@ oci_register_toolchains(
     crane_version = LATEST_CRANE_VERSION,
 )
 
-# You can pull your base images using oci_pull like this:
 load("@rules_oci//oci:pull.bzl", "oci_pull")
 
 oci_pull(
@@ -130,7 +128,6 @@ oci_pull(
     ],
 )
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
     name = "rules_pkg",
     urls = [
@@ -139,5 +136,7 @@ http_archive(
     ],
     sha256 = "8f9ee2dc10c1ae514ee599a8b42ed99fa262b757058f65ad3c384289ff70c4b8",
 )
+
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
 rules_pkg_dependencies()
