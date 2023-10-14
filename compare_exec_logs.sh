@@ -30,6 +30,5 @@ java -jar /tmp/rcd.jar -first /tmp/exec1.log -second /tmp/exec2.log -o output.tx
 
 echo "Performing clean up..."
 rm -rf /tmp/disk_cache
-rm -f /tmp/exec*.log
 
 echo "Results are available in output.txt"
