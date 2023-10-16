@@ -16,6 +16,7 @@ few tools if you don't already have them:
 - C++ compiler
 - `docker`
 - `ffmpeg`
+- [Nix Package Manager](https://nixos.org/download)
 
 ## Target Dependency Graph
 
