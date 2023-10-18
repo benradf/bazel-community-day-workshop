@@ -1,4 +1,6 @@
-build --host_platform=@io_tweag_rules_nixpkgs//nixpkgs/platforms:host
-build --incompatible_enable_cc_toolchain_resolution
+# EngFlow recommended flags
+build --grpc_keepalive_time=30s
+build --nolegacy_important_outputs
 
+# Import user bazelrc with remote cache config
 try-import %workspace%/user.bazelrc
