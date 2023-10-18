@@ -2,3 +2,4 @@
 .sw?
 /bazel-*
 output.txt
+/user.bazelrc
