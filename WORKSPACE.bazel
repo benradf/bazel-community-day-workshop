@@ -2,9 +2,6 @@ workspace(name = "bazel-community-day-workshop")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
 http_archive(
     name = "io_tweag_rules_nixpkgs",
     sha256 = "b01f170580f646ee3cde1ea4c117d00e561afaf3c59eda604cf09194a824ff10",
@@ -95,8 +92,6 @@ new_git_repository(
     remote = "https://github.com/emikulic/darkhttpd.git",
     build_file_content = """exports_files(["darkhttpd.c"])""",
 )
-
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_oci",
