@@ -1,6 +1,7 @@
 workspace(name = "bazel-community-day-workshop")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("//bazel:defs.bzl", "generate_entrypoint")
 
 http_archive(
     name = "io_tweag_rules_nixpkgs",
@@ -13,7 +14,7 @@ load("@io_tweag_rules_nixpkgs//nixpkgs:repositories.bzl", "rules_nixpkgs_depende
 
 rules_nixpkgs_dependencies()
 
-load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_local_repository", "nixpkgs_cc_configure")
+load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_cc_configure", "nixpkgs_local_repository")
 
 nixpkgs_local_repository(
     name = "nixpkgs",
@@ -47,7 +48,6 @@ http_archive(
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 go_repository(
@@ -88,9 +88,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 
 new_git_repository(
     name = "darkhttpd",
+    build_file_content = """exports_files(["darkhttpd.c"])""",
     commit = "11d36de0a2c94f21270877a7f6ea0050f4b9a346",
     remote = "https://github.com/emikulic/darkhttpd.git",
-    build_file_content = """exports_files(["darkhttpd.c"])""",
 )
 
 http_archive(
@@ -125,13 +125,17 @@ oci_pull(
 
 http_archive(
     name = "rules_pkg",
+    sha256 = "8f9ee2dc10c1ae514ee599a8b42ed99fa262b757058f65ad3c384289ff70c4b8",
     urls = [
         "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.9.1/rules_pkg-0.9.1.tar.gz",
         "https://github.com/bazelbuild/rules_pkg/releases/download/0.9.1/rules_pkg-0.9.1.tar.gz",
     ],
-    sha256 = "8f9ee2dc10c1ae514ee599a8b42ed99fa262b757058f65ad3c384289ff70c4b8",
 )
 
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 
 rules_pkg_dependencies()
+
+generate_entrypoint(
+    name = "docker_entrypoint",
+)
