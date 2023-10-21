@@ -7,7 +7,7 @@ def _generate_entrypoint_impl(repository_ctx):
     build_datetime = repository_ctx.execute(["date"]).stdout
     repository_ctx.template(
         "entrypoint.sh",
-        Label("//bazel:entrypoint.sh.tpl"),
+        Label("//docker:entrypoint.sh.tpl"),
         {
             "%{DATETIME}%": build_datetime,
         },
@@ -15,7 +15,7 @@ def _generate_entrypoint_impl(repository_ctx):
 
     repository_ctx.template(
         "BUILD.bazel",
-        Label("//bazel:BUILD.bazel.tpl"),
+        Label("//docker:entrypoint.BUILD.bazel.tpl"),
         {},
     )
 
