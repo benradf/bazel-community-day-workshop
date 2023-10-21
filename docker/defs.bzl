@@ -4,7 +4,7 @@ def _generate_entrypoint_impl(repository_ctx):
     to inject build version and date.
     """
     repository_ctx.report_progress("Generating entrypoint.sh...")
-    build_datetime = repository_ctx.execute(["date"]).stdout
+    build_datetime = repository_ctx.execute(["date -d@0"]).stdout
     repository_ctx.template(
         "entrypoint.sh",
         Label("//docker:entrypoint.sh.tpl"),
