@@ -1,4 +1,5 @@
 #!/bin/bash
+# BUILD DATETIME: %{DATETIME}%
 set -eu
 
 printf "\n\x1b[1;37mhttp://localhost:8080/animated.gif\x1b[0m\n\n"

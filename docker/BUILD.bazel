@@ -3,7 +3,7 @@ load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
 genrule(
     name = "overlay",
     srcs = [
-        ":entrypoint.sh",
+        "@docker_entrypoint//:entrypoint",
         "//gif:animated",
     ],
     outs = ["overlay.tar"],
