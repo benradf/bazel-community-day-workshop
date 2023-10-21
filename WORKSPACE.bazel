@@ -92,22 +92,13 @@ new_git_repository(
     remote = "https://github.com/emikulic/darkhttpd.git",
 )
 
-# https://github.com/bazel-contrib/rules_oci/pull/385
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-http_archive(
+git_repository(
     name = "rules_oci",
-    sha256 = "21a7d14f6ddfcb8ca7c5fc9ffa667c937ce4622c7d2b3e17aea1ffbc90c96bed",
-    strip_prefix = "rules_oci-1.4.0",
-    url = "https://github.com/bazel-contrib/rules_oci/releases/download/v1.4.0/rules_oci-v1.4.0.tar.gz",
+    commit = "495b9b592b963c37959dbcac4e68153185b6a580",  # https://github.com/bazel-contrib/rules_oci/pull/385
+    remote = "https://github.com/bazel-contrib/rules_oci.git",
 )
-
-#load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-#
-#git_repository(
-#    name = "rules_oci",
-#    commit = "495b9b592b963c37959dbcac4e68153185b6a580",
-#    remote = "https://github.com/bazel-contrib/rules_oci.git",
-#)
 
 load("@rules_oci//oci:dependencies.bzl", "rules_oci_dependencies")
 
