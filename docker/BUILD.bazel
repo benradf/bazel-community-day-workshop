@@ -14,8 +14,10 @@ oci_image(
     base = "@ubuntu",
     tars = [
         ":overlay",
-        "//httpd:closure",
-    ],
+    ] + select({
+        "//httpd:linux": ["//httpd:closure_linux.tar"],
+        "//httpd:darwin": ["//httpd:closure_macos.tar"],
+    }),
     cmd = ["/entrypoint.sh"],
 )
 

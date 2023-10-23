@@ -4,9 +4,34 @@ cc_binary(
 )
 
 genrule(
-    name = "closure",
+    name = "closure_linux",
     srcs = [":darkhttpd"],
-    outs = ["closure.tar"],
+    outs = ["closure_linux.tar"],
+    target_compatible_with = [
+        "@platforms//os:linux"
+    ],
+    cmd = """
+        closure() {
+            echo $$1
+            match='/nix/store/\\S*\\.so\\S*'
+            for dep in $$(ldd "$$1" | grep -o "$$match"); do
+                closure $$dep
+            done
+        }
+        mkdir closure
+        cp $$(closure $< | sort -u) closure
+        tar --sort=name --mtime=0 --owner=0 --group=0 --numeric-owner -cf $@ closure
+    """,
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "closure_macos",
+    srcs = [":darkhttpd"],
+    outs = ["closure_macos.tar"],
+    target_compatible_with = [
+        "@platforms//os:macos"
+    ],
     cmd = """
         closure() {
             echo $$1
@@ -20,4 +45,18 @@ genrule(
         gtar --sort=name --mtime=0 --owner=0 --group=0 --numeric-owner -cf $@ closure
     """,
     visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "darwin",
+    constraint_values = [
+        "@platforms//os:macos",
+    ],
+)
+
+config_setting(
+    name = "linux",
+    constraint_values = [
+        "@platforms//os:linux",
+    ],
 )
